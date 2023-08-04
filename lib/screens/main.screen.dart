@@ -1,18 +1,19 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, prefer_const_constructors
 
 import 'package:fintracker/bloc/cubit/app_cubit.dart';
+import 'package:fintracker/screens/Advertisement/advertisement_page.dart';
+import 'package:fintracker/screens/NFC/NFC_Payment.dart';
+import 'package:fintracker/screens/Report/Report.dart';
+import 'package:fintracker/screens/Visa/Visa.screen.dart';
 import 'package:fintracker/screens/accounts/accounts.screen.dart';
 import 'package:fintracker/screens/categories/categories.screen.dart';
 import 'package:fintracker/screens/home/home.screen.dart';
 import 'package:fintracker/screens/onboard/onboard_screen.dart';
+import 'package:fintracker/screens/plans/plan.dart';
 import 'package:fintracker/screens/settings/settings.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fintracker/screens/Visa/Visa.screen.dart';
 import 'Wishlist.dart';
-import 'package:fintracker/screens/NFC/NFC_Payment.dart';
-import 'package:fintracker/screens/plans/plan.dart';
-
 
 class MainScreen extends StatefulWidget{
   const MainScreen({super.key});
@@ -70,7 +71,9 @@ class _MainScreenState extends State<MainScreen>{
           drawer: NavigationDrawer(
             selectedIndex: _selected,
             children: const [
+              NavigationDrawerDestination(icon: Icon(Icons.report), label: Text("Monthly_Report")),
               NavigationDrawerDestination(icon: Icon(Icons.nfc), label: Text("NFC_Paymet")),
+              NavigationDrawerDestination(icon: Icon(Icons.shopify_sharp), label: Text("Shop")),
               NavigationDrawerDestination(icon: Icon(Icons.note), label: Text("Wishlist")),
               NavigationDrawerDestination(icon: Icon(Icons.settings), label: Text("Settings")),
             ],
@@ -78,13 +81,21 @@ class _MainScreenState extends State<MainScreen>{
               Navigator.pop(context);
 
               if(selected == 0){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const NfcPaymentPage()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ExpenseTracker()));
               }
 
               if(selected == 1){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> NfcPaymentPage()));
+              }
+
+              if(selected == 2){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const AdvertisementPage()));
+              }
+
+              if(selected == 3){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const WishlistPage()));
               }
-              if(selected == 2){
+              if(selected == 4){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SettingsScreen()));
               }
 

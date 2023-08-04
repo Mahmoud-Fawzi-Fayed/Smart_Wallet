@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double _expense = 0;
   //double _savings = 0;
   DateTimeRange _range = DateTimeRange(
-      start: DateTime.now().subtract(Duration(days: DateTime.now().day -1)),
+      start: DateTime(2023, 6, 5),
       end: DateTime.now()
   );
   Account? _account;

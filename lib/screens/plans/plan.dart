@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unused_label, camel_case_types, avoid_types_as_parameter_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -15,10 +16,11 @@ class plan extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Budget Planner',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: MediaQuery.of(context).platformBrightness,
+      theme: Theme.of(context).copyWith(
+        appBarTheme: AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
+      ),
       home: BudgetPlannerScreen(),
       debugShowCheckedModeBanner: false,
       
@@ -35,8 +37,8 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
   final TextEditingController _incomeController = TextEditingController();
 
   final Map<String, Map<String, Map<String, double>>> plans = {
-  'student': {
-    'plan1': {
+  'Student': {
+    'Budget-Friendly': {
       'Food': 20.0,
       'Transportation': 25.0,
       'Utilities': 10.0,
@@ -44,7 +46,7 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
       'Recreation & Entertainment': 10.0,
       'Saving': 10.0,
     },
-    'plan2': {
+    'Balanced Lifestyle': {
       'Food': 10.0,
       'Transportation': 30.0,
       'Utilities': 15.0,
@@ -53,8 +55,8 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
       'Saving': 13.0,
     },
   },
-  'expatriate': {
-    'plan1': {
+  'Expatriate': {
+    'Comfortable Living': {
       'Food': 22.0,
       'Transportation': 20.0,
       'Utilities': 20.0,
@@ -62,7 +64,7 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
       'Recreation & Entertainment': 8.0,
       'Saving': 12.0,
     },
-    'plan2': {
+    'Cost-Effective': {
       'Food': 25.0,
       'Transportation': 15.0,
       'Utilities': 30.0,
@@ -71,8 +73,8 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
       'Saving': 8.0,
     },
   },
-  'graduate': {
-    'plan1': {
+  'Graduate': {
+    'Independent Living': {
       'Food': 10.0,
       'Transportation': 50.0,
       'Utilities': 15.0,
@@ -80,11 +82,19 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
       'Recreation & Entertainment': 5.0,
       'Saving': 5.0,
     },
+    'Pocket-friendly': {
+      'Food': 10.0,
+      'Transportation': 50.0,
+      'Utilities': 13.0,
+      'Personal Spending': 7.0,
+      'Recreation & Entertainment': 10.0,
+      'Saving': 10.0,
+    },
   },
 };
 
-  late String selectedCategory = 'student';
-  late String selectedPlan = 'plan1';
+  late String selectedCategory = 'Student';
+  late String selectedPlan = 'Budget-Friendly';
   double? income;
 
   @override
@@ -101,8 +111,8 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
 
   void _loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    selectedCategory = prefs.getString('selectedCategory') ?? 'student';
-    selectedPlan = prefs.getString('selectedPlan') ?? 'plan1';
+    selectedCategory = prefs.getString('selectedCategory') ?? 'Student';
+    selectedPlan = prefs.getString('selectedPlan') ?? 'Budget-Friendly';
     income = prefs.getDouble('income');
     if (income != null) {
       _incomeController.text = income!.toString();
@@ -159,47 +169,47 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
           children: [
             Text(
               'Enter your monthly income:',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 17),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 7),
             TextField(
               controller: _incomeController,
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 14),
             Text(
               'Choose your category:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 7),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CategorySelectionTile(
-                  category: 'student',
-                  isSelected: selectedCategory == 'student',
+                  category: 'Student',
+                  isSelected: selectedCategory == 'Student',
                   onTap: onCategorySelected,
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: 14),
                 CategorySelectionTile(
-                  category: 'expatriate',
-                  isSelected: selectedCategory == 'expatriate',
+                  category: 'Expatriate',
+                  isSelected: selectedCategory == 'Expatriate',
                   onTap: onCategorySelected,
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: 14),
                 CategorySelectionTile(
-                  category: 'graduate',
-                  isSelected: selectedCategory == 'graduate',
+                  category: 'Graduate',
+                  isSelected: selectedCategory == 'Graduate',
                   onTap: onCategorySelected,
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 14),
             Text(
               'Choose a plan:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 7),
             Expanded(
               child: ListView(
                 children: (plans[selectedCategory]?.keys ?? []).map((plan) {
@@ -211,7 +221,7 @@ class _BudgetPlannerScreenState extends State<BudgetPlannerScreen> {
                 }).toList(),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 14),
             ElevatedButton(
               onPressed: () async {
                 final double? enteredIncome = double.tryParse(_incomeController.text);
@@ -303,25 +313,23 @@ class CategorySelectionTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(category),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        margin: EdgeInsets.symmetric(vertical: 8),
+        duration: Duration(milliseconds: 140),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+        margin: EdgeInsets.symmetric(vertical: 7),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(7),
           color: isSelected ? Colors.blue : Colors.grey[300],
           boxShadow: [
             if (isSelected)
               BoxShadow(
                 color: Colors.blue.withOpacity(0.6),
-                blurRadius: 4,
-                offset: Offset(0, 4),
               ),
           ],
         ),
         child: Text(
           category,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: FontWeight.bold,
             color: isSelected ? Colors.white : Colors.black,
           ),
@@ -347,18 +355,16 @@ class PlanSelectionTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(plan),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        margin: EdgeInsets.symmetric(vertical: 8),
+        duration: Duration(milliseconds: 140),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+        margin: EdgeInsets.symmetric(vertical: 7),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(7),
           color: isSelected ? Colors.blue : Colors.grey[300],
           boxShadow: [
             if (isSelected)
               BoxShadow(
                 color: Colors.blue.withOpacity(0.6),
-                blurRadius: 4,
-                offset: Offset(0, 4),
               ),
           ],
         ),
@@ -368,7 +374,7 @@ class PlanSelectionTile extends StatelessWidget {
             Text(
               plan,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: isSelected ? Colors.white : Colors.black,
               ),
@@ -398,11 +404,17 @@ class PlanDetailsScreen extends StatelessWidget {
     required this.planDetails,
   });
 
+  final Map<String, IconData> categoryIcons ={
+    'Food': Icons.restaurant,
+    'Transportation': Icons.emoji_transportation_outlined,
+    'Utilities': Icons.category,
+    'Personal Spending': Icons.house,
+    'Recreation & Entertainment': Icons.tv,
+    'Saving': Icons.attach_money
+  };
+
   @override
   Widget build(BuildContext context) {
-    
-    // You can use the data from `selectedCategory`, `selectedPlan`, `income`, and `planDetails`
-    // to display the information in a visually appealing way.
     return Scaffold(
       appBar: AppBar(
         title: Text('Plan Details'),
@@ -414,42 +426,52 @@ class PlanDetailsScreen extends StatelessWidget {
           children: [
             Text(
               'Selected Category: $selectedCategory',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text(
               'Selected Plan: $selectedPlan',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text(
               'Monthly Income: $income',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 20),
+            Divider(),
             SizedBox(height: 20),
             Text(
               'Plan Details:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Expanded(
-              child: ListView.builder(
-                itemCount: planDetails.length,
-                itemBuilder: (context, index) {
-                  final category = planDetails.keys.elementAt(index);
-                  final percentage = planDetails.values.elementAt(index);
-                  final allocation = (income * (percentage / 100)).toStringAsFixed(2);
+              child: SingleChildScrollView(
+                child: Column(
+                  children: planDetails.entries.map((entry) {
+                    final category = entry.key;
+                    final percentage = entry.value;
+                    final allocation = (income * (percentage / 100)).toStringAsFixed(2);
+                    final icon = categoryIcons[category];
 
-                  return Text('$category: $allocation');
-                },
+                    return ListTile(
+                      leading: Icon(icon ?? Icons.category),
+                      title: Text(
+                        '$category: $allocation',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
             SizedBox(height: 20),
+            Divider(),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // to be used to fill in the plan numbers in another file.
-                // You can use the data from `selectedCategory`, `selectedPlan`, `income`, and `planDetails`.
-                // You may save this data in a desired format (e.g., JSON) to be used in another file or screen.
+                // Save plan logic
                 Navigator.pop(context);
               },
               child: Text('Save Plan'),
@@ -460,3 +482,4 @@ class PlanDetailsScreen extends StatelessWidget {
     );
   }
 }
+

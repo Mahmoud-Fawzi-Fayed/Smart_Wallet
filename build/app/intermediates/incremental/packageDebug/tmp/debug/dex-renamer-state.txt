@@ -1,4 +1,4 @@
-#Tue Jul 04 23:48:47 EET 2023
-base.0=C\:\\Users\\dell\\Downloads\\Smart_Wallet\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
+#Fri Aug 04 10:10:26 EET 2023
+base.0=E\:\\Smart_Wallet\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
+renamed.0=classes.dex
